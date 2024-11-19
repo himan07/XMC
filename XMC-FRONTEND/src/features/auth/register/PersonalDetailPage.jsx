@@ -45,8 +45,8 @@ const StyledPaper = styled(Paper)({
 
 const PersonalDetails = ({ activeStep, setActiveStep }) => {
   const [phonenumber, setPhonenumber] = useState("");
-  const [countryCode, setCountryCode] = useState("+91");
-  const [gender, setGender] = useState("Male");
+  const [countryCode, setCountryCode] = useState("");
+  const [gender, setGender] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [visibility, setVisibility] = useState(false);
   const navigate = useNavigate();
@@ -58,6 +58,7 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
   const genders = [
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
+    { value: "Others", label: "Others" },
   ];
 
   const {
@@ -94,7 +95,7 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
               value={countryCode}
               onChange={(e) => setCountryCode(e.target.value)}
               options={countries}
-              placeholder="Select Country Code"
+              placeholder="Select"
               sx={{ width: "80px" }}
               errors={errors.mobile}
               errorWidth="300px"
@@ -160,11 +161,22 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
               width: "100%",
             }}
           >
-            <SelectComponent
-              value={gender}
-              options={genders}
-              onChange={(e) => setGender(e.target.value)}
-              placeholder="Choose gender"
+            <Controller
+              name="gender"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: "Please select a gender",
+              }}
+              render={({ field }) => (
+                <SelectComponent
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={genders}
+                  placeholder="Select Gender"
+                  errors={errors.gender}
+                />
+              )}
             />
             <InputField
               placeholder="Zipcode"

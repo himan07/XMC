@@ -57,7 +57,9 @@ const SelectComponent = ({
         }}
         {...props}
       >
-        {options.length === 0 && <MenuItem value="">{placeholder}</MenuItem>}
+        <MenuItem value="" disabled>
+          {placeholder}
+        </MenuItem>
         {options.map((option, index) => (
           <MenuItem key={index} value={option.value}>
             {option.icon && option.icon} {option.label}
