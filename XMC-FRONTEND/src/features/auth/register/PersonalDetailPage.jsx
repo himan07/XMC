@@ -7,10 +7,8 @@ import {
   FormControlLabel,
   Grid,
   InputAdornment,
-  MenuItem,
   Paper,
   Popper,
-  Select,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
@@ -25,6 +23,8 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { emailValidation } from "../../../utils/emailValidation";
 import { passwordValidation } from "../../../utils/passwordValidation";
+import { mobileValidation } from "../../../utils/mobileValidation";
+import SelectComponent from "../../../components/Select/Select";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -49,6 +49,15 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
   const [visibility, setVisibility] = useState(false);
   const navigate = useNavigate();
 
+  const countries = [
+    { value: "+91", label: "🇮🇳 +91" },
+    { value: "+1", label: "🇺🇸 +1" },
+  ];
+  const genders = [
+    { value: "Male", label: "Male" },
+    { value: "Female", label: "Female" },
+  ];
+
   const {
     control,
     register,
@@ -56,7 +65,6 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
     formState: { errors },
     watch,
   } = useForm();
-
 
   const handleClickVisibility = () => {
     setVisibility(!visibility);
@@ -80,49 +88,26 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
             errors={errors.email}
           />
           <Box sx={{ display: "flex", gap: 2, width: "100%" }}>
-            <Select
+            <SelectComponent
               value={countryCode}
               onChange={(e) => setCountryCode(e.target.value)}
-              size="small"
-              displayEmpty
-              sx={{
-                borderRadius: "10px",
-                backgroundColor: "#e9e9e9",
-                height: "40px",
-                fontSize: "0.875rem",
-                border: "none !important",
-                padding: "0 12px",
-                mt: 2,
-                "&:hover": {
-                  backgroundColor: "#dcdcdc",
-                  border: "none",
-                },
-                "&.Mui-focused": {
-                  backgroundColor: "#e9e9e9",
-                  boxShadow: "none",
-                  border: "none",
-                },
-                ".MuiSelect-select": {
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "8px 0",
-                },
-              }}
-            >
-              <MenuItem value="+91">🇮🇳 +91</MenuItem>
-              <MenuItem value="+1">🇺🇸 +1</MenuItem>
-            </Select>
+              options={countries}
+              placeholder="Select Country Code"
+              sx={{ width: "80px" }}
+            />
             <InputField
               placeholder="Enter your mobile number"
               value={phonenumber}
               onChange={(e) => setPhonenumber(e.target.value)}
+              register={{ ...register("mobile", mobileValidation(watch)) }}
+              errors={errors.mobile}
             />
           </Box>
           <Box sx={{ width: "100%" }}>
             <InputField
               placeholder="Password"
               type={visibility ? "text" : "password"}
-              register={{...register("password", passwordValidation(watch))}}
+              register={{ ...register("password", passwordValidation(watch)) }}
               errors={errors.password}
               InputProps={{
                 endAdornment: (
@@ -156,39 +141,12 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
               width: "100%",
             }}
           >
-            <Select
+            <SelectComponent
               value={gender}
+              options={genders}
               onChange={(e) => setGender(e.target.value)}
-              size="small"
-              fullWidth
-              sx={{
-                borderRadius: "10px",
-                backgroundColor: "#e9e9e9",
-                height: "40px",
-                fontSize: "0.875rem",
-                border: "none !important",
-                padding: "0 12px",
-                mt: 2,
-                "&:hover": {
-                  backgroundColor: "#dcdcdc",
-                  border: "none",
-                },
-                "&.Mui-focused": {
-                  backgroundColor: "#e9e9e9",
-                  boxShadow: "none",
-                  border: "none",
-                },
-                ".MuiSelect-select": {
-                  display: "flex",
-                  alignItems: "center",
-                  padding: "8px 0",
-                },
-              }}
-            >
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
-              <MenuItem value="Others">Others</MenuItem>
-            </Select>
+              placeholder="Choose gender"
+            />
             <InputField placeholder="Zipcode" />
           </Box>
           <Box sx={{ width: "100%" }}>
