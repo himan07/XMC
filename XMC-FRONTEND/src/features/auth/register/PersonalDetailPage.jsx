@@ -3,13 +3,10 @@ import {
   Autocomplete,
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
   Grid,
   InputAdornment,
   Paper,
   Popper,
-  Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import InputField from "../../../components/InputField/InputField";
