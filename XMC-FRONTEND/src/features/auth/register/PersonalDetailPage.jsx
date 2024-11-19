@@ -25,6 +25,8 @@ import { emailValidation } from "../../../utils/emailValidation";
 import { passwordValidation } from "../../../utils/passwordValidation";
 import { mobileValidation } from "../../../utils/mobileValidation";
 import SelectComponent from "../../../components/Select/Select";
+import { dobValidation } from "../../../utils/dateOfBirthValidation";
+import CheckboxComponent from "../../../components/Checkbox/CheckboxComp";
 
 const StyledPopper = styled(Popper)({
   border: "1px solid #e0e0e0",
@@ -77,7 +79,7 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
   };
 
   return (
-    <Grid container justifyContent="flex-end" mt={4}>
+    <Grid container justifyContent="flex-end" mt={2}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ maxWidth: "100%", width: "100%" }}>
           <InputField
@@ -87,20 +89,21 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
             }}
             errors={errors.email}
           />
-          <Box sx={{ display: "flex", gap: 2, width: "100%" }}>
+          <Box sx={{ display: "flex", gap: 3, width: "100%" }}>
             <SelectComponent
               value={countryCode}
               onChange={(e) => setCountryCode(e.target.value)}
               options={countries}
               placeholder="Select Country Code"
               sx={{ width: "80px" }}
+              errors={errors.mobile}
+              errorWidth="300px"
             />
             <InputField
               placeholder="Enter your mobile number"
               value={phonenumber}
               onChange={(e) => setPhonenumber(e.target.value)}
               register={{ ...register("mobile", mobileValidation(watch)) }}
-              errors={errors.mobile}
             />
           </Box>
           <Box sx={{ width: "100%" }}>
@@ -130,8 +133,24 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
               gap: 2,
             }}
           >
-            <InputField placeholder="First Name" />
-            <InputField placeholder="Last Name" />
+            <InputField
+              placeholder="First Name"
+              register={{
+                ...register("firstName", {
+                  required: "First Name is required",
+                }),
+              }}
+              errors={errors.firstName}
+            />
+            <InputField
+              placeholder="Last Name"
+              register={{
+                ...register("lastName", {
+                  required: "Last Name is required",
+                }),
+              }}
+              errors={errors.lastName}
+            />
           </Box>
           <Box
             sx={{
@@ -147,7 +166,15 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
               onChange={(e) => setGender(e.target.value)}
               placeholder="Choose gender"
             />
-            <InputField placeholder="Zipcode" />
+            <InputField
+              placeholder="Zipcode"
+              register={{
+                ...register("zipcode", {
+                  required: "Zipcode is required",
+                }),
+              }}
+              errors={errors.zipcode}
+            />
           </Box>
           <Box sx={{ width: "100%" }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -163,6 +190,10 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
                     {...params}
                     placeholder="DD/MM/YYYY"
                     fullWidth
+                    register={{
+                      ...register("dateOfBirth", dobValidation(watch)),
+                    }}
+                    errors={errors.dateOfBirth}
                   />
                 )}
                 minDate={new Date("1900-01-01")}
@@ -194,42 +225,39 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
               renderInput={(params) => (
                 <InputField
                   {...params}
-                  label="Profession"
-                  variant="outlined"
-                  className="form-input"
+                  placeholder="Profession"
+                  register={{
+                    ...register("professions", {
+                      required: "Profession is required",
+                    }),
+                  }}
+                  errors={errors.professions}
                 />
               )}
             />
           </Box>
-          <Controller
+          <CheckboxComponent
             name="termsAgreement"
             control={control}
-            defaultValue={false}
-            rules={{ required: "You must agree to the Terms of Use." }}
-            render={({ field }) => (
-              <FormControlLabel
-                sx={{ ml: 1, mt: 1 }}
-                control={<Checkbox {...field} checked={field.value} />}
-                label={
-                  <Typography variant="body1" sx={{ fontSize: "15px" }}>
-                    By checking this box, you confirm you have read and agree to
-                    our{" "}
-                    <a
-                      href="/terms-of-use"
-                      target="_blank"
-                      className="terms-text"
-                    >
-                      Terms of Use
-                    </a>
-                    ,{" "}
-                    <a href="/privacy" target="_blank" className="terms-text">
-                      Privacy Policy
-                    </a>
-                  </Typography>
-                }
-              />
-            )}
+            label={
+              <>
+                By checking this box, you confirm you have read and agree to our{" "}
+                <a href="/terms-of-use" target="_blank" className="terms-text">
+                  Terms of Use
+                </a>
+                ,{" "}
+                <a href="/privacy" target="_blank" className="terms-text">
+                  Privacy Policy
+                </a>
+              </>
+            }
+            rules={{
+              validate: (value) => value || false,
+            }}
+            sx={{ mt: 2 }}
+            checkboxSx={{ "&.Mui-checked": { color: "blue" } }}
           />
+
           <Box
             sx={{
               display: "flex",

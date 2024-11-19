@@ -6,14 +6,16 @@ const InputField = ({ register, errors, onKeyDown, ...props }) => (
     fullWidth
     size="small"
     error={!!errors}
-    helperText={errors ? errors.message : ""}
+    helperText={
+      errors ? <span style={{ color: "#d32f2f" }}>{errors.message}</span> : ""
+    }
     onKeyDown={onKeyDown}
     {...register}
     {...props}
     sx={{
       "& .MuiOutlinedInput-root": {
-        borderRadius: "10px", 
-        backgroundColor: "#e9e9e9", 
+        borderRadius: "10px",
+        backgroundColor: "#e9e9e9",
         border: "none",
         mt: 2, // margin-top for space from top
         height: "40px", // Set a specific height for the input (you can adjust this)
@@ -23,28 +25,27 @@ const InputField = ({ register, errors, onKeyDown, ...props }) => (
           backgroundColor: "#dcdcdc",
         },
         "&.Mui-focused": {
-          backgroundColor: "#e9e9e9", 
+          backgroundColor: "#e9e9e9",
           boxShadow: "none",
         },
       },
       "& .MuiInputLabel-root": {
-        color: "#6e6e6e", 
-        textAlign: "center", 
+        color: "#6e6e6e",
+        textAlign: "center",
         lineHeight: "55px",
         "&.Mui-focused": {
-          color: "#6e6e6e", 
+          color: "#6e6e6e",
         },
       },
       "& .MuiOutlinedInput-notchedOutline": {
-        border: "none", 
+        border: "none",
       },
       "& .MuiFormHelperText-root": {
         textAlign: "left",
-        margin: 0, 
-        padding: 0, 
+        margin: 0,
+        padding: 0,
       },
     }}
-    
   />
 );
 

@@ -5,6 +5,7 @@ import {
   FormControl,
   InputLabel,
   InputBase,
+  FormHelperText,
 } from "@mui/material";
 
 const SelectComponent = ({
@@ -12,19 +13,24 @@ const SelectComponent = ({
   onChange,
   options,
   label,
+  register,
+  errors,
+  name,
   size = "small",
   placeholder = "Select",
+  errorWidth = "100%",
   sx = {},
   ...props
 }) => {
   return (
-    <FormControl fullWidth size={size} sx={{ ...sx }}>
+    <FormControl fullWidth size={size} sx={{ ...sx }} error={!!errors}>
       {label && <InputLabel>{label}</InputLabel>}
       <Select
         value={value}
         onChange={onChange}
         displayEmpty
         input={<InputBase />}
+        {...(register && register(name))}
         sx={{
           borderRadius: "10px",
           backgroundColor: "#e9e9e9",
@@ -58,6 +64,17 @@ const SelectComponent = ({
           </MenuItem>
         ))}
       </Select>
+      {errors && (
+        <FormHelperText
+          sx={{
+            width: errorWidth,
+            textAlign: "left !important",
+            ml: -0.3,
+          }}
+        >
+          {errors.message}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 };
