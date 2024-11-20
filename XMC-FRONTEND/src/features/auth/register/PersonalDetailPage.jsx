@@ -52,6 +52,7 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
     { value: "+91", label: "🇮🇳 +91" },
     { value: "+1", label: "🇺🇸 +1" },
   ];
+  
   const genders = [
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
@@ -188,7 +189,6 @@ const PersonalDetails = ({ activeStep, setActiveStep }) => {
           <Box sx={{ width: "100%" }}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
-                label="Date of Birth (DD/MM/YYYY)"
                 value={selectedDate}
                 onChange={(newValue) => {
                   setSelectedDate(newValue);
